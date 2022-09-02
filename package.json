@@ -1,0 +1,36 @@
+{
+  "name": "@tegro/ton3-contracts",
+  "version": "0.0.1",
+  "description": "standard ton contracts implemented for ton3",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TegroTON/ton3-contracts.git"
+  },
+  "author": "pyAndr3w",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/TegroTON/ton3-contracts/issues"
+  },
+  "homepage": "https://github.com/TegroTON/ton3-contracts#readme",
+  "dependencies": {
+    "ton3-core": "^0.0.16"
+  },
+  "devDependencies": {
+    "@types/node": "^18.6.3",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
+    "eslint": "^8.18.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "typescript": "^4.7.4"
+  },
+  "files": [
+    "/dist"
+  ]
+}
