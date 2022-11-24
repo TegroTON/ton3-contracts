@@ -1,23 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WalletV3Contract = void 0;
+exports.WalletV3 = void 0;
 const ton3_core_1 = require("ton3-core");
 const constants_1 = require("./constants");
 const Source_1 = require("../Source");
-class WalletV3Contract extends ton3_core_1.Contracts.ContractBase {
-    constructor(opts) {
-        const code = opts.version === 'org.ton.wallets.v3' ? Source_1.Source.WalletV3() : Source_1.Source.WalletV3R2();
+class WalletV3 extends ton3_core_1.Contracts.ContractBase {
+    constructor({ workchain = 0, publicKey, version = constants_1.WalletVersion.V3R2, subwalletId = constants_1.StandardSubwalletId, }) {
+        const code = version === constants_1.WalletVersion.V3 ? Source_1.Source.WalletV3() : Source_1.Source.WalletV3R2();
         const storage = new ton3_core_1.Builder()
             .storeUint(0, 32)
-            .storeUint(opts.subwalletId ?? constants_1.StandardSubwalletId, 32)
-            .storeBytes(opts.publicKey)
+            .storeUint(subwalletId, 32)
+            .storeBytes(publicKey)
             .cell();
-        super(opts.workchain ?? 0, code, storage);
-        this.publicKey = opts.publicKey;
-        this.subwalletId = opts.subwalletId ?? constants_1.StandardSubwalletId;
-        this.version = opts.version === 'org.ton.wallets.v3' ? opts.version : 'org.ton.wallets.v3.r2';
+        super({ workchain, code, storage });
+        this.publicKey = publicKey;
+        this.subwalletId = subwalletId;
+        this.version = version;
     }
-    createTransferMessage(transfers, seqno, timeout = 60) {
+    createTransferMessage(transfers, { seqno, timeout = 60, }) {
         if (!transfers.length || transfers.length > 4) {
             throw new Error('ContractWalletV3: can make only 1 to 4 transfers per operation.');
         }
@@ -44,5 +44,5 @@ class WalletV3Contract extends ton3_core_1.Contracts.ContractBase {
         return new ton3_core_1.Contracts.MessageExternalIn({ dest: this.address }, { body: body.cell(), state: this.state });
     }
 }
-exports.WalletV3Contract = WalletV3Contract;
+exports.WalletV3 = WalletV3;
 //# sourceMappingURL=WalletV3.js.map

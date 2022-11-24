@@ -8,4 +8,9 @@ export declare class JettonWallet {
         forwardAmount: Coins;
         forwardPayload: Cell | null;
     }): Cell;
+    static createBurnRequest({ queryId, amount, responseDestination, }: {
+        queryId: number | bigint;
+        amount: Coins;
+        responseDestination?: Address | null;
+    }): Cell;
 }

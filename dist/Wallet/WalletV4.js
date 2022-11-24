@@ -1,24 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WalletV4Contract = void 0;
+exports.WalletV4 = void 0;
 const ton3_core_1 = require("ton3-core");
 const constants_1 = require("./constants");
 const Source_1 = require("../Source");
-class WalletV4Contract extends ton3_core_1.Contracts.ContractBase {
-    constructor(opts) {
-        const code = opts.version === 'org.ton.wallets.v4' ? Source_1.Source.WalletV4() : Source_1.Source.WalletV4R2();
+class WalletV4 extends ton3_core_1.Contracts.ContractBase {
+    constructor({ workchain = 0, publicKey, version = constants_1.WalletVersion.V4R2, subwalletId = constants_1.StandardSubwalletId, }) {
+        const code = version === constants_1.WalletVersion.V4 ? Source_1.Source.WalletV4() : Source_1.Source.WalletV4R2();
         const storage = new ton3_core_1.Builder()
             .storeUint(0, 32)
-            .storeUint(opts.subwalletId ?? constants_1.StandardSubwalletId, 32)
-            .storeBytes(opts.publicKey)
+            .storeUint(subwalletId, 32)
+            .storeBytes(publicKey)
             .storeUint(0, 1)
             .cell();
-        super(opts.workchain ?? 0, code, storage);
-        this.publicKey = opts.publicKey;
-        this.subwalletId = opts.subwalletId ?? constants_1.StandardSubwalletId;
-        this.version = opts.version === 'org.ton.wallets.v4' ? opts.version : 'org.ton.wallets.v4.r2';
+        super({ workchain, code, storage });
+        this.publicKey = publicKey;
+        this.subwalletId = subwalletId;
+        this.version = version;
     }
-    createTransferMessage(transfers, seqno, timeout = 60) {
+    createTransferMessage(transfers, { seqno, timeout = 60, }) {
         if (!transfers.length || transfers.length > 4) {
             throw new Error('ContractWalletV3: can make only 1 to 4 transfers per operation.');
         }
@@ -46,5 +46,5 @@ class WalletV4Contract extends ton3_core_1.Contracts.ContractBase {
         return new ton3_core_1.Contracts.MessageExternalIn({ dest: this.address }, { body: body.cell(), state: this.state });
     }
 }
-exports.WalletV4Contract = WalletV4Contract;
+exports.WalletV4 = WalletV4;
 //# sourceMappingURL=WalletV4.js.map

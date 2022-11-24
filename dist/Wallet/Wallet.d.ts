@@ -1,11 +1,12 @@
-import { StandardWalletVersion } from './types';
-import { WalletV3Contract } from './WalletV3';
-import { WalletV4Contract } from './WalletV4';
+import { WalletVersionType } from './types';
+import { WalletV3 } from './WalletV3';
+import { WalletV4 } from './WalletV4';
+import { HighloadWallet } from './HighloadWallet';
 export declare class Wallet {
     static openByPubKey({ workchain, publicKey, subwalletId, version, }: {
         workchain?: number;
         publicKey: Uint8Array;
         subwalletId?: number;
-        version?: StandardWalletVersion;
-    }): WalletV3Contract | WalletV4Contract;
+        version?: WalletVersionType;
+    }): WalletV3 | WalletV4 | HighloadWallet;
 }

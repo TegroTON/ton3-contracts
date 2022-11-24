@@ -1,15 +1,18 @@
 import { Contracts } from 'ton3-core';
-import { StandardWalletContract, StandardWalletTransfer, WalletV4Version } from './types';
-export declare class WalletV4Contract extends Contracts.ContractBase implements StandardWalletContract {
+import { StandardWalletContract, WalletTransfer, WalletV4VersionType } from './types';
+export declare class WalletV4 extends Contracts.ContractBase implements StandardWalletContract {
     private publicKey;
     private subwalletId;
     private version;
-    constructor(opts: {
+    constructor({ workchain, publicKey, version, subwalletId, }: {
         workchain?: number;
         publicKey: Uint8Array;
         subwalletId?: number;
-        version?: WalletV4Version;
+        version?: WalletV4VersionType;
     });
-    createTransferMessage(transfers: StandardWalletTransfer[], seqno: number, timeout?: number): Contracts.MessageExternalIn;
+    createTransferMessage(transfers: WalletTransfer[], { seqno, timeout, }: {
+        seqno: number;
+        timeout?: number;
+    }): Contracts.MessageExternalIn;
     createDeployMessage(): Contracts.MessageExternalIn;
 }

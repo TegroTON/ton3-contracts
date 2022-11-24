@@ -24,6 +24,15 @@ class JettonWallet {
         }
         return builder.cell();
     }
+    static createBurnRequest({ queryId = 0, amount, responseDestination = null, }) {
+        const builder = new ton3_core_1.Builder()
+            .storeUint(constants_1.JettonOperation.BURN, 32)
+            .storeUint(queryId, 64)
+            .storeCoins(amount)
+            .storeAddress(responseDestination)
+            .storeBit(0);
+        return builder.cell();
+    }
 }
 exports.JettonWallet = JettonWallet;
 //# sourceMappingURL=JettonWallet.js.map

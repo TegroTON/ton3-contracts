@@ -1,40 +1,56 @@
 import { Address, Builder, Contracts } from 'ton3-core';
-import { StandardWalletContract, StandardWalletTransfer, WalletV3Version } from './types';
-import { StandardSubwalletId } from './constants';
+import {
+    StandardWalletContract, WalletTransfer, WalletV3VersionType,
+} from './types';
+import { StandardSubwalletId, WalletVersion } from './constants';
 import { Source } from '../Source';
 
-export class WalletV3Contract extends Contracts.ContractBase implements StandardWalletContract {
+export class WalletV3 extends Contracts.ContractBase implements StandardWalletContract {
     private publicKey: Uint8Array;
 
     private subwalletId: number;
 
-    private version: WalletV3Version;
+    private version: WalletV3VersionType;
 
-    constructor(opts: { workchain?: number, publicKey: Uint8Array, subwalletId?: number, version?: WalletV3Version }) {
-        const code = opts.version === 'org.ton.wallets.v3' ? Source.WalletV3() : Source.WalletV3R2();
+    constructor({
+        workchain = 0,
+        publicKey,
+        version = WalletVersion.V3R2,
+        subwalletId = StandardSubwalletId,
+    }: {
+        workchain?: number,
+        publicKey: Uint8Array,
+        subwalletId?: number,
+        version?: WalletV3VersionType
+    }) {
+        const code = version === WalletVersion.V3 ? Source.WalletV3() : Source.WalletV3R2();
 
         const storage = new Builder()
             .storeUint(0, 32)
-            .storeUint(opts.subwalletId ?? StandardSubwalletId, 32)
-            .storeBytes(opts.publicKey)
+            .storeUint(subwalletId, 32)
+            .storeBytes(publicKey)
             .cell();
 
-        super(opts.workchain ?? 0, code, storage);
+        super({ workchain, code, storage });
 
-        this.publicKey = opts.publicKey;
-        this.subwalletId = opts.subwalletId ?? StandardSubwalletId;
-        this.version = opts.version === 'org.ton.wallets.v3' ? opts.version : 'org.ton.wallets.v3.r2';
+        this.publicKey = publicKey;
+        this.subwalletId = subwalletId;
+        this.version = version;
     }
 
     public createTransferMessage(
-        transfers: StandardWalletTransfer[], // array of transfers
-        seqno: number, // sequence transfer number
-        timeout = 60, // timeout in seconds
+        transfers: WalletTransfer[], // array of transfers
+        {
+            seqno,
+            timeout = 60,
+        }: {
+            seqno: number, // sequence transfer number
+            timeout?: number // timeout in seconds
+        },
     ): Contracts.MessageExternalIn {
         if (!transfers.length || transfers.length > 4) {
             throw new Error('ContractWalletV3: can make only 1 to 4 transfers per operation.');
         }
-
         const body = new Builder()
             .storeUint(this.subwalletId, 32)
             .storeUint(~~(Date.now() / 1000) + timeout, 32) // valid until
