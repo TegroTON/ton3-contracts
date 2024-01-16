@@ -23,4 +23,4 @@ If you have questions or suggestions, please file an [Issue](https://github.com/
 
 ## License
 
-Main repository License: `GNU GENERAL PUBLIC LICENSE Version 3`. The repository contains the source code of various smart contracts, their licenses are compatible with the repository main license. Information about the source code and the license of the contracts can be found in the files that use them.
+The main repository of this project is distributed under the `GNU GENERAL PUBLIC LICENSE Version 3`. This repository encompasses the source code of various smart contracts, each of which is licensed in a manner that is compatible with the main repository's license. Detailed information about the source code and the specific licenses of these contracts can be found within the individual files that utilize them. This approach ensures that all components of the project adhere to the overarching licensing framework, promoting transparency and legal consistency across the entire suite of software assets.
