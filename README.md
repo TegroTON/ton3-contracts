@@ -1,3 +1,9 @@
+> **Archived — early experimental TON SDK, no longer maintained.**
+>
+> Preserved for historical reference only. The code may be outdated and is not recommended for new projects.
+
+---
+
 # 💎 @tegro/ton3-contracts
 [![License](https://img.shields.io/badge/license-GPL-brightgreen)](https://www.gnu.org/licenses/gpl-3.0.txt)
 [![ton3](https://img.shields.io/badge/for%20use%20with-ton3-brightgreen)](https://github.com/tonstack/ton3-core)
